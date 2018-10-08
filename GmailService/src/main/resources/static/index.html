@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<!--<a href="user">Click here to Google Login</a> -->
+<div style="color:white;  background-color:darkturquoise">
+    <h1 align="center">OAuth 2.0 Application</h1>
+</div>
+<div class="container-fluid">
+
+    <br>
+    <div class="container">
+        <div id="unauthenticated">
+            <a class="btn btn-primary" href="/login">Click here to Google Login</a>
+        </div>
+        <div id="authenticated" style="display: none">
+            <h2><b>Logged in as: <span id="user"></span></b></h2>
+            <img src="" id="image">
+            <br>
+            <br>
+            <div>
+                <button onClick="logout()" class="btn btn-danger">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $.get("/user", function (data) {
+        $("#user").html(data.userAuthentication.details.name);
+        $("#image").attr("src", data.userAuthentication.details.picture);
+        $("#unauthenticated").hide()
+        $("#authenticated").show()
+    });
+    var logout = function () {
+        $.post("/logout", function () {
+            $("#user").html('');
+            $("#unauthenticated").show();
+            $("#authenticated").hide();
+        });
+        return true;
+    }
+
+</script>
+
+</body>
+</html>
